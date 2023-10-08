@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.poscodx.jblog.repository.BlogRepository;
+import com.poscodx.jblog.service.BlogService;
 import com.poscodx.jblog.service.UserService;
 import com.poscodx.jblog.vo.UserVo;
 
@@ -18,7 +20,11 @@ import com.poscodx.jblog.vo.UserVo;
 @Controller
 public class UserController {
 	
+	@Autowired
+	private BlogRepository blogRepository;
 	
+	@Autowired
+	private BlogService blogService;
 	@Autowired
 	private UserService userService;
 	
@@ -34,12 +40,20 @@ public class UserController {
 			
 		}
 		userService.join(userVo);
+		blogService.join(userVo);
+		
+		
 		return "redirect:/user/joinsuccess";
 	}
 
 	@RequestMapping(value="/joinsuccess", method=RequestMethod.GET)
 	public String joinsuccess() {
 		return "user/joinsuccess";
+	}
+	
+	@RequestMapping(value="/login", method=RequestMethod.GET)
+	public String login() {
+		return "user/login";
 	}
 
 }
